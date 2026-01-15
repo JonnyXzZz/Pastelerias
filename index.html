@@ -303,12 +303,50 @@
       font-size: 12px;
     }
 
-    /* Product gallery */
-    .products{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+    /* Catálogo en carrusel (configurable: ver comentarios en HTML) */
+    .carousel{
+      position: relative;
     }
+    .carousel-track{
+      display:flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding-bottom: 6px;
+    }
+    .carousel-track::-webkit-scrollbar{
+      height: 8px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb{
+      background: rgba(233,106,135,.35);
+      border-radius: 999px;
+    }
+    .carousel-item{
+      flex: 0 0 calc((100% - 28px) / 3);
+      scroll-snap-align: start;
+    }
+    .carousel-controls{
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .carousel-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(214,155,166,.35);
+      background: rgba(255,255,255,.85);
+      box-shadow: var(--shadow2);
+      font-weight: 900;
+      color: #3b2a2e;
+      cursor:pointer;
+    }
+    .carousel-btn:active{ transform: translateY(1px); }
     .product{
       overflow:hidden;
       padding: 0;
@@ -390,10 +428,12 @@
       header.hero{ grid-template-columns: 1fr; }
       .menu{ display:none; }
       .brand{ min-width: unset; }
+      .carousel-item{ flex: 0 0 calc((100% - 14px) / 2); }
     }
     @media (max-width: 780px){
-      .grid3, .products{ grid-template-columns: 1fr; }
+      .grid3{ grid-template-columns: 1fr; }
       .ph{ height: 210px; }
+      .carousel-item{ flex: 0 0 100%; }
     }
   </style>
 </head>
@@ -418,7 +458,7 @@
       </div>
 
       <nav class="menu" aria-label="Menú">
-        <a href="#servicios">Servicios</a>
+        <!-- Links rápidos (edita/oculta según secciones disponibles) -->
         <a href="#catalogo">Catálogo</a>
         <a href="#opiniones">Opiniones</a>
         <a href="#contacto">Contacto</a>
@@ -510,62 +550,99 @@
   </header>
 
   <main class="wrap">
-    <section id="servicios">
-      <h2 class="title">Servicios</h2>
-      <p class="subtitle">Elige lo que necesitas y lo dejamos listo para tu evento</p>
-
-      <div class="grid3">
-        <div class="card">
-          <h4>🍓 Tortas personalizadas</h4>
-          <p>Diseños temáticos, rellenos a elección y decoraciones premium.</p>
-          <div class="price">$ Desde 25.990 <small>(según tamaño)</small></div>
-        </div>
-
-        <div class="card">
-          <h4>🧁 Box de cupcakes</h4>
-          <p>Ideal para cumpleaños, empresas y celebraciones.</p>
-          <div class="price">$ Desde 12.990 <small>(6 unidades)</small></div>
-        </div>
-
-        <div class="card">
-          <h4>🍮 Postres para eventos</h4>
-          <p>Vasitos, mini tartas, brownies y más.</p>
-          <div class="price">$ Desde 14.990 <small>(packs)</small></div>
-        </div>
-      </div>
-    </section>
-
     <section id="catalogo">
       <h2 class="title">Catálogo</h2>
       <p class="subtitle">Ejemplos de productos (puedes reemplazar por fotos reales)</p>
 
-      <div class="products">
-        <article class="card product">
-          <div class="ph" style="background-image: var(--img-cake);"></div>
-          <div class="content">
-            <b>Desde 25.990</b>
-            <small>Torta temática</small>
-            <div class="row"><span>⭐ Más pedida</span><span>Personalizable</span></div>
-          </div>
-        </article>
+      <!-- Controles del carrusel (edita texto/iconos si lo necesitas) -->
+      <div class="carousel-controls">
+        <button class="carousel-btn" type="button" id="catalogo-prev" aria-label="Anterior">‹</button>
+        <button class="carousel-btn" type="button" id="catalogo-next" aria-label="Siguiente">›</button>
+      </div>
 
-        <article class="card product">
-          <div class="ph" style="background-image: var(--img-cupcakes);"></div>
-          <div class="content">
-            <b>Desde 12.990</b>
-            <small>Cupcakes premium</small>
-            <div class="row"><span>🎁 Box</span><span>6 unidades</span></div>
-          </div>
-        </article>
+      <!-- Carrusel de catálogo (agrega/edita items aquí) -->
+      <div class="carousel" aria-label="Carrusel de catálogo">
+        <div class="carousel-track" id="catalogo-track">
+          <!-- Item 1 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cake);"></div>
+            <div class="content">
+              <b>Desde 25.990</b>
+              <small>Torta temática</small>
+              <div class="row"><span>⭐ Más pedida</span><span>Personalizable</span></div>
+            </div>
+          </article>
 
-        <article class="card product">
-          <div class="ph" style="background-image: var(--img-desserts);"></div>
-          <div class="content">
-            <b>Desde 14.990</b>
-            <small>Postres en vasitos</small>
-            <div class="row"><span>🍮 Pack</span><span>Eventos</span></div>
-          </div>
-        </article>
+          <!-- Item 2 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cupcakes);"></div>
+            <div class="content">
+              <b>Desde 12.990</b>
+              <small>Cupcakes premium</small>
+              <div class="row"><span>🎁 Box</span><span>6 unidades</span></div>
+            </div>
+          </article>
+
+          <!-- Item 3 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-desserts);"></div>
+            <div class="content">
+              <b>Desde 14.990</b>
+              <small>Postres en vasitos</small>
+              <div class="row"><span>🍮 Pack</span><span>Eventos</span></div>
+            </div>
+          </article>
+
+          <!-- Item 4 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cake);"></div>
+            <div class="content">
+              <b>Desde 29.990</b>
+              <small>Torta de cumpleaños</small>
+              <div class="row"><span>🎈 Infantil</span><span>3 niveles</span></div>
+            </div>
+          </article>
+
+          <!-- Item 5 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cupcakes);"></div>
+            <div class="content">
+              <b>Desde 15.990</b>
+              <small>Mini cupcakes</small>
+              <div class="row"><span>✨ Surtido</span><span>12 unidades</span></div>
+            </div>
+          </article>
+
+          <!-- Item 6 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-desserts);"></div>
+            <div class="content">
+              <b>Desde 18.990</b>
+              <small>Postres individuales</small>
+              <div class="row"><span>🥄 Mix</span><span>8 unidades</span></div>
+            </div>
+          </article>
+
+          <!-- Item 7 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cake);"></div>
+            <div class="content">
+              <b>Desde 32.990</b>
+              <small>Torta gourmet</small>
+              <div class="row"><span>🍓 Frutal</span><span>Edición especial</span></div>
+            </div>
+          </article>
+
+          <!-- Item 8 -->
+          <article class="card product carousel-item">
+            <div class="ph" style="background-image: var(--img-cupcakes);"></div>
+            <div class="content">
+              <b>Desde 11.990</b>
+              <small>Box mini</small>
+              <div class="row"><span>💝 Regalo</span><span>4 unidades</span></div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -659,6 +736,20 @@
   <script>
     // Año automático
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // === CARRUSEL DE CATÁLOGO ===
+    // Ajusta el desplazamiento por clic si cambias el ancho de los items.
+    const catalogTrack = document.getElementById("catalogo-track");
+    const catalogPrev = document.getElementById("catalogo-prev");
+    const catalogNext = document.getElementById("catalogo-next");
+
+    function scrollCatalog(direction){
+      const amount = catalogTrack.clientWidth;
+      catalogTrack.scrollBy({ left: amount * direction, behavior: "smooth" });
+    }
+
+    catalogPrev.addEventListener("click", () => scrollCatalog(-1));
+    catalogNext.addEventListener("click", () => scrollCatalog(1));
 
     // === IMÁGENES INCLUIDAS (SVG embebidos como data URI) ===
     // No necesitas archivos externos. Puedes cambiar estos SVG por fotos reales cuando quieras.
