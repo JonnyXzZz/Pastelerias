@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dulce Aura | Pastelería & Tortas personalizadas</title>
+
+  <style>
+    :root{
+      --bg: #fff7f7;
+      --paper: rgba(255,255,255,.72);
+      --card: rgba(255,255,255,.86);
+      --stroke: rgba(214, 155, 166, .28);
+      --text: #3a2b2e;
+      --muted: #6f5a60;
+
+      --brand: #e96a87;     /* rosa principal */
+      --brand2:#ffd2dd;     /* rosa claro */
+      --cream: #fff0e6;     /* crema */
+      --sand: #ffe9cf;      /* beige */
+      --mint: #dff6e9;      /* verde suave */
+
+      --shadow: 0 18px 60px rgba(60, 30, 40, .12);
+      --shadow2: 0 10px 26px rgba(60, 30, 40, .10);
+      --radius: 18px;
+      --radius2: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 12% 5%, rgba(233,106,135,.18), transparent 55%),
+        radial-gradient(900px 700px at 85% 8%, rgba(255,210,221,.35), transparent 55%),
+        radial-gradient(700px 550px at 15% 90%, rgba(255,233,207,.45), transparent 55%),
+        var(--bg);
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ width:min(1120px, 92%); margin:auto; }
+
+    /* Topbar */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background: rgba(255, 247, 247, .65);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 260px;
+    }
+    .logo{
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      box-shadow: var(--shadow2);
+      background:
+        linear-gradient(135deg, rgba(233,106,135,.95), rgba(255,210,221,.92));
+      display:grid;
+      place-items:center;
+      border: 1px solid rgba(255,255,255,.7);
+    }
+    .logo svg{ width: 26px; height: 26px; }
+
+    .brand .t1{ font-weight: 900; letter-spacing: -.2px; }
+    .brand .t2{ font-size: 12px; color: var(--muted); font-weight: 700; margin-top: -2px; }
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap: 18px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .menu a:hover{ color: var(--text); }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: var(--shadow2);
+      background: linear-gradient(135deg, var(--brand), #ff98ad);
+      color: #fff;
+      white-space: nowrap;
+    }
+    .btn.secondary{
+      background: linear-gradient(135deg, var(--cream), var(--sand));
+      color: #3d2a2f;
+      border: 1px solid rgba(214,155,166,.25);
+      box-shadow: none;
+      font-weight: 900;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    /* Hero */
+    header.hero{
+      padding: 46px 0 18px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items:center;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid var(--stroke);
+      color: var(--muted);
+      font-weight: 850;
+      width: fit-content;
+      box-shadow: 0 10px 24px rgba(60,30,40,.06);
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(34px, 4.5vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -.9px;
+      color: #412c31;
+    }
+    .lead{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 56ch;
+    }
+    .hero-actions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0 12px;
+    }
+
+    .info-row{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .chip{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.68);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 24px rgba(60,30,40,.06);
+    }
+    .chip svg{ width: 18px; height: 18px; opacity: .92; }
+
+    /* Side card (pedido destacado) */
+    .panel{
+      background: rgba(255,255,255,.74);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel:before{
+      content:"";
+      position:absolute;
+      inset: -120px -120px auto auto;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(233,106,135,.25), transparent 60%);
+      filter: blur(10px);
+      transform: rotate(10deg);
+    }
+    .panel h3{
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .panel .rowTop{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      padding: 12px 12px;
+      border-radius: 18px;
+      background: rgba(255, 240, 230, .78);
+      border: 1px solid rgba(214,155,166,.22);
+      position: relative;
+      z-index: 1;
+    }
+    .cakeIcon{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff, rgba(255,210,221,.9));
+      border: 1px solid rgba(214,155,166,.25);
+      display:grid;
+      place-items:center;
+    }
+    .cakeIcon svg{ width: 24px; height: 24px; }
+
+    .panel .rowTop b{ display:block; font-size: 15px; }
+    .panel .rowTop span{ color: var(--muted); font-weight: 750; font-size: 13px; }
+
+    .panel .list{
+      margin-top: 12px;
+      display:grid;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .li{
+      display:grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(214,155,166,.20);
+    }
+    .li b{ display:block; font-size: 13px; }
+    .li div{ color: var(--muted); font-weight: 740; font-size: 13px; }
+
+    .badge{
+      margin-top: 12px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(223, 246, 233, .85);
+      border: 1px solid rgba(36, 180, 120, .20);
+      font-weight: 900;
+      color: #2b6b4f;
+      position: relative;
+      z-index: 1;
+      width: fit-content;
+    }
+
+    /* Sections */
+    section{ padding: 34px 0; }
+    .title{
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -.4px;
+      color: #4a2f36;
+    }
+    .subtitle{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 26px rgba(60,30,40,.08);
+      padding: 18px;
+    }
+    .card h4{ margin:0 0 8px; font-size: 18px; letter-spacing:-.2px; }
+    .card p{ margin:0; color: var(--muted); font-weight: 650; }
+    .price{
+      margin-top: 12px;
+      display:flex;
+      gap: 8px;
+      align-items:baseline;
+      font-weight: 950;
+      color: #3b2a2e;
+    }
+    .price small{
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    /* Product gallery */
+    .products{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .product{
+      overflow:hidden;
+      padding: 0;
+    }
+    .ph{
+      height: 190px;
+      border-bottom: 1px solid rgba(214,155,166,.20);
+      background-size: cover;
+      background-position:center;
+      position: relative;
+    }
+    .ph:after{
+      content:"";
+      position:absolute;
+      inset: 16px;
+      border-radius: 18px;
+      border: 1px dashed rgba(233,106,135,.35);
+      background: rgba(255,255,255,.16);
+    }
+    .product .content{ padding: 16px 18px 18px; }
+    .product b{ display:block; margin-bottom: 6px; }
+    .product small{ color: var(--muted); font-weight: 700; }
+    .product .row{
+      margin-top: 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    /* FAQ */
+    details{
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 22px rgba(60,30,40,.06);
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 900;
+      color:#3f2a30;
+    }
+    details p{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 60px;
+      border-top: 1px solid var(--stroke);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    /* WhatsApp Float */
+    .wa-float{
+      position:fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 50;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display:grid;
+      place-items:center;
+      background: #40c27a;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.75);
+    }
+    .wa-float svg{ width: 28px; height: 28px; }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      header.hero{ grid-template-columns: 1fr; }
+      .menu{ display:none; }
+      .brand{ min-width: unset; }
+    }
+    @media (max-width: 780px){
+      .grid3, .products{ grid-template-columns: 1fr; }
+      .ph{ height: 210px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Logo icon (inline SVG) -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 10c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 10h12v4a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4v-4Z" fill="white" opacity=".95"/>
+            <path d="M9 8.2c.6-.7 1.5-1.2 3-1.2s2.4.5 3 1.2" stroke="#e96a87" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9.5 13.3h5" stroke="#e96a87" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="t1">Dulce Aura</div>
+          <div class="t2">Pastelería & Tortas personalizadas</div>
+        </div>
+      </div>
+
+      <nav class="menu" aria-label="Menú">
+        <a href="#servicios">Servicios</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#opiniones">Opiniones</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <a class="btn" href="#contacto">Cotizar</a>
+    </div>
+  </div>
+
+  <header class="wrap hero">
+    <div>
+      <div class="kicker">
+        <span>🍰</span>
+        <span>Tortas • Postres • Eventos</span>
+      </div>
+
+      <h1>Tortas personalizadas que se ven increíbles y saben mejor</h1>
+
+      <p class="lead">
+        Hacemos pastelería artesanal para cumpleaños, matrimonios y celebraciones.
+        Pedidos con 48 hrs de anticipación.
+      </p>
+
+      <div class="hero-actions">
+        <!-- Cambia aquí tu WhatsApp si quieres -->
+        <a class="btn" href="https://wa.link/semxqk" target="_blank" rel="noopener">💬 Cotizar por WhatsApp</a>
+        <a class="btn secondary" href="#catalogo">Ver catálogo</a>
+      </div>
+
+      <div class="info-row">
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M20 7 10 17l-6-6" stroke="#2b6b4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Hecho a pedido
+        </div>
+
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="#e96a87" stroke-width="2" />
+            <path d="M12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" fill="#e96a87" opacity=".9"/>
+          </svg>
+          Entregas en tu zona
+        </div>
+
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="m12 3 2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.3l6-.8L12 3Z" fill="#f3b400" opacity=".9"/>
+          </svg>
+          5.0 en recomendaciones
+        </div>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <h3>Pedido destacado</h3>
+
+      <div class="rowTop">
+        <div class="cakeIcon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M8 10c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="#e96a87" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.5 10h11v3.7A4.3 4.3 0 0 1 13.2 18H10.8a4.3 4.3 0 0 1-4.3-4.3V10Z" fill="#fff"/>
+            <path d="M9.2 14h5.6" stroke="#e96a87" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <b>Torta temática</b>
+          <span>Diseño, sabor y dedicatoria</span>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="li">
+          <div aria-hidden="true">🧁</div>
+          <div><b>Incluye</b> Diseño + sabor + dedicatoria</div>
+        </div>
+        <div class="li">
+          <div aria-hidden="true">🚚</div>
+          <div><b>Entrega</b> Retiro o despacho</div>
+        </div>
+        <div class="li">
+          <div aria-hidden="true">🍫</div>
+          <div><b>Sabores</b> Chocolate, vainilla, red velvet</div>
+        </div>
+      </div>
+
+      <div class="badge">🎁 Cotiza tu torta hoy</div>
+    </aside>
+  </header>
+
+  <main class="wrap">
+    <section id="servicios">
+      <h2 class="title">Servicios</h2>
+      <p class="subtitle">Elige lo que necesitas y lo dejamos listo para tu evento</p>
+
+      <div class="grid3">
+        <div class="card">
+          <h4>🍓 Tortas personalizadas</h4>
+          <p>Diseños temáticos, rellenos a elección y decoraciones premium.</p>
+          <div class="price">$ Desde 25.990 <small>(según tamaño)</small></div>
+        </div>
+
+        <div class="card">
+          <h4>🧁 Box de cupcakes</h4>
+          <p>Ideal para cumpleaños, empresas y celebraciones.</p>
+          <div class="price">$ Desde 12.990 <small>(6 unidades)</small></div>
+        </div>
+
+        <div class="card">
+          <h4>🍮 Postres para eventos</h4>
+          <p>Vasitos, mini tartas, brownies y más.</p>
+          <div class="price">$ Desde 14.990 <small>(packs)</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalogo">
+      <h2 class="title">Catálogo</h2>
+      <p class="subtitle">Ejemplos de productos (puedes reemplazar por fotos reales)</p>
+
+      <div class="products">
+        <article class="card product">
+          <div class="ph" style="background-image: var(--img-cake);"></div>
+          <div class="content">
+            <b>Desde 25.990</b>
+            <small>Torta temática</small>
+            <div class="row"><span>⭐ Más pedida</span><span>Personalizable</span></div>
+          </div>
+        </article>
+
+        <article class="card product">
+          <div class="ph" style="background-image: var(--img-cupcakes);"></div>
+          <div class="content">
+            <b>Desde 12.990</b>
+            <small>Cupcakes premium</small>
+            <div class="row"><span>🎁 Box</span><span>6 unidades</span></div>
+          </div>
+        </article>
+
+        <article class="card product">
+          <div class="ph" style="background-image: var(--img-desserts);"></div>
+          <div class="content">
+            <b>Desde 14.990</b>
+            <small>Postres en vasitos</small>
+            <div class="row"><span>🍮 Pack</span><span>Eventos</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="opiniones">
+      <h2 class="title">Opiniones</h2>
+      <p class="subtitle">Lo que dicen nuestros clientes</p>
+
+      <div class="grid3">
+        <div class="card">
+          <h4>⭐ “Hermosa y deliciosa”</h4>
+          <p>“La torta quedó igual a la foto, llegó perfecta y estaba increíble.”</p>
+          <p style="margin-top:12px; color:var(--muted); font-weight:900;">— Camila</p>
+        </div>
+
+        <div class="card">
+          <h4>⭐ “Recomendadísimo”</h4>
+          <p>“Compré cupcakes para mi oficina, todos quedaron felices.”</p>
+          <p style="margin-top:12px; color:var(--muted); font-weight:900;">— Luis</p>
+        </div>
+
+        <div class="card">
+          <h4>⭐ “Entrega rápida”</h4>
+          <p>“Excelente atención, me ayudaron con el diseño y quedó hermoso.”</p>
+          <p style="margin-top:12px; color:var(--muted); font-weight:900;">— Valentina</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 class="title">Preguntas frecuentes</h2>
+      <p class="subtitle">Respuestas rápidas para ayudarte a decidir</p>
+
+      <details>
+        <summary>¿Con cuánta anticipación debo pedir?</summary>
+        <p>Idealmente 48 horas. Para eventos grandes recomendamos 5 a 7 días.</p>
+      </details>
+      <details>
+        <summary>¿Hacen despacho?</summary>
+        <p>Sí, dependiendo de la zona. También puedes retirar en punto acordado.</p>
+      </details>
+      <details>
+        <summary>¿Puedo elegir sabor y relleno?</summary>
+        <p>Claro. Puedes combinar sabores y elegir rellenos según disponibilidad.</p>
+      </details>
+    </section>
+
+    <section id="contacto">
+      <h2 class="title">Contacto</h2>
+      <p class="subtitle">Cotiza rápido y coordinamos tu pedido</p>
+
+      <div class="grid3">
+        <div class="card">
+          <h4>💬 WhatsApp</h4>
+          <p>Respuestas rápidas para cotizaciones y pedidos.</p>
+          <p style="margin-top:12px;">
+            <!-- Cambia aquí tu WhatsApp si quieres -->
+            <a class="btn" href="https://wa.link/semxqk" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>📍 Zona de entrega</h4>
+          <p>Coloca tu ciudad o comunas donde trabajas.</p>
+          <p style="margin-top:12px; color:var(--muted); font-weight:900;">Ej: Santiago Centro / Maipú / Ñuñoa</p>
+        </div>
+
+        <div class="card">
+          <h4>🕒 Horarios</h4>
+          <p>Atención de lunes a sábado.</p>
+          <p style="margin-top:12px; color:var(--muted); font-weight:900;">10:00 a 19:00 hrs</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+      <div>© <span id="year"></span> Dulce Aura. Todos los derechos reservados.</div>
+      <div>Hecho con 💗 por JQA Soluciones</div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flotante -->
+  <a class="wa-float" href="https://wa.link/semxqk" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M20 11.7c0 4.5-3.7 8.2-8.2 8.2-1.4 0-2.8-.4-4-.9L4 20l1-3.5c-.7-1.2-1-2.5-1-3.8C4 7.2 7.7 3.5 12.2 3.5S20 7.2 20 11.7Z" fill="#fff" opacity=".96"/>
+      <path d="M10.3 8.6c.2-.5.4-.5.7-.5h.6c.2 0 .4 0 .5.3l.7 1.7c.1.3.1.5-.1.7l-.4.4c-.1.1-.2.3-.1.5.2.6 1.3 2.1 2.8 2.7.2.1.4 0 .5-.1l.5-.5c.2-.2.4-.2.7-.1l1.7.8c.3.1.3.3.3.5 0 .3-.2 1-.7 1.4-.5.4-1.1.5-1.5.4-.4 0-1.5-.5-2.6-1.2-1.2-.7-2.5-2.1-3-3-.5-.9-.8-1.7-.8-2.3 0-.6.2-1 .4-1.4Z" fill="#2a7a51"/>
+    </svg>
+  </a>
+
+  <script>
+    // Año automático
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // === IMÁGENES INCLUIDAS (SVG embebidos como data URI) ===
+    // No necesitas archivos externos. Puedes cambiar estos SVG por fotos reales cuando quieras.
+    const svgCake = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff7f7"/>
+          <stop offset="1" stop-color="#ffe9cf"/>
+        </linearGradient>
+        <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ff9bb0"/>
+          <stop offset="1" stop-color="#e96a87"/>
+        </linearGradient>
+        <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#5a2a35" flood-opacity=".16"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="800" fill="url(#bg)"/>
+      <g opacity=".25">
+        <circle cx="160" cy="180" r="70" fill="#ffd2dd"/>
+        <circle cx="1050" cy="150" r="90" fill="#ffd2dd"/>
+        <circle cx="980" cy="650" r="120" fill="#dff6e9"/>
+        <circle cx="250" cy="680" r="110" fill="#ffe9cf"/>
+      </g>
+      <g filter="url(#sh)">
+        <rect x="250" y="220" width="700" height="420" rx="36" fill="#fff" opacity=".92" stroke="#f3c1cc"/>
+        <rect x="320" y="470" width="560" height="120" rx="30" fill="#fff0e6" stroke="#f3c1cc"/>
+        <rect x="340" y="280" width="520" height="210" rx="36" fill="#ffe7ee" stroke="#f3c1cc"/>
+        <rect x="410" y="250" width="380" height="80" rx="40" fill="#fff" opacity=".9" stroke="#f3c1cc"/>
+      </g>
+
+      <!-- cake -->
+      <g transform="translate(380,260)">
+        <rect x="80" y="250" width="360" height="120" rx="38" fill="#fff" stroke="#f0b6c2"/>
+        <rect x="105" y="140" width="310" height="130" rx="44" fill="#ffe7ee" stroke="#f0b6c2"/>
+        <rect x="140" y="70" width="240" height="80" rx="40" fill="#fff" stroke="#f0b6c2"/>
+        <path d="M140 150c30 30 70 30 100 0 30-30 70-30 100 0 30 30 70 30 100 0v30H140Z" fill="url(#pink)" opacity=".92"/>
+        <circle cx="180" cy="110" r="12" fill="#e96a87"/>
+        <circle cx="240" cy="100" r="10" fill="#ff9bb0"/>
+        <circle cx="300" cy="112" r="12" fill="#e96a87"/>
+        <circle cx="350" cy="102" r="10" fill="#ff9bb0"/>
+        <path d="M255 25c0 18-14 32-32 32s-32-14-32-32 14-32 32-32 32 14 32 32Z" fill="#ffd2dd" opacity=".75"/>
+        <rect x="200" y="0" width="16" height="70" rx="8" fill="#e96a87"/>
+        <path d="M208 2c10 18 10 36 0 54-10-18-10-36 0-54Z" fill="#ffcf77"/>
+      </g>
+
+      <!-- caption -->
+      <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#3a2b2e">
+        <text x="310" y="520" font-size="44" font-weight="900">Torta temática</text>
+        <text x="310" y="575" font-size="26" font-weight="700" fill="#6f5a60">Diseño + topper + decoración premium</text>
+      </g>
+    </svg>`;
+
+    const svgCupcakes = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+      <defs>
+        <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff7f7"/>
+          <stop offset="1" stop-color="#ffd2dd"/>
+        </linearGradient>
+        <filter id="sh2" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#5a2a35" flood-opacity=".14"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="800" fill="url(#bg2)"/>
+      <g opacity=".25">
+        <circle cx="200" cy="140" r="90" fill="#ffe9cf"/>
+        <circle cx="980" cy="170" r="80" fill="#dff6e9"/>
+        <circle cx="1000" cy="660" r="140" fill="#fff0e6"/>
+        <circle cx="240" cy="680" r="120" fill="#ffe9cf"/>
+      </g>
+
+      <g filter="url(#sh2)">
+        <rect x="210" y="180" width="780" height="460" rx="42" fill="#fff" opacity=".92" stroke="#f3c1cc"/>
+      </g>
+
+      <!-- cupcakes -->
+      <g transform="translate(290,270)">
+        <g transform="translate(0,90)">
+          <path d="M70 250h220l-22 130H92Z" fill="#ffe9cf" stroke="#f0b6c2" stroke-width="6"/>
+          <path d="M80 250c20-70 60-110 100-120 30-8 70 0 90 20 22 22 34 52 40 100Z" fill="#ffe7ee" stroke="#f0b6c2" stroke-width="6"/>
+          <circle cx="180" cy="140" r="24" fill="#e96a87"/>
+          <circle cx="140" cy="155" r="14" fill="#ff9bb0"/>
+          <circle cx="220" cy="155" r="14" fill="#ff9bb0"/>
+        </g>
+
+        <g transform="translate(330,40)">
+          <path d="M70 300h220l-22 130H92Z" fill="#fff0e6" stroke="#f0b6c2" stroke-width="6"/>
+          <path d="M80 300c20-70 60-110 100-120 30-8 70 0 90 20 22 22 34 52 40 100Z" fill="#ffd2dd" stroke="#f0b6c2" stroke-width="6"/>
+          <circle cx="180" cy="190" r="24" fill="#e96a87"/>
+          <circle cx="140" cy="205" r="14" fill="#ff9bb0"/>
+          <circle cx="220" cy="205" r="14" fill="#ff9bb0"/>
+        </g>
+      </g>
+
+      <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#3a2b2e">
+        <text x="290" y="560" font-size="44" font-weight="900">Cupcakes premium</text>
+        <text x="290" y="615" font-size="26" font-weight="700" fill="#6f5a60">Box para regalo o eventos</text>
+      </g>
+    </svg>`;
+
+    const svgDesserts = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+      <defs>
+        <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff7f7"/>
+          <stop offset="1" stop-color="#dff6e9"/>
+        </linearGradient>
+        <filter id="sh3" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#5a2a35" flood-opacity=".14"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="800" fill="url(#bg3)"/>
+      <g opacity=".25">
+        <circle cx="220" cy="180" r="90" fill="#ffd2dd"/>
+        <circle cx="1040" cy="170" r="90" fill="#ffe9cf"/>
+        <circle cx="980" cy="660" r="140" fill="#fff0e6"/>
+        <circle cx="240" cy="680" r="120" fill="#ffd2dd"/>
+      </g>
+
+      <g filter="url(#sh3)">
+        <rect x="210" y="180" width="780" height="460" rx="42" fill="#fff" opacity=".92" stroke="#f3c1cc"/>
+      </g>
+
+      <!-- dessert cups -->
+      <g transform="translate(325,270)">
+        <g transform="translate(0,80)">
+          <path d="M40 0h220l-30 290H70Z" fill="#fff" stroke="#f0b6c2" stroke-width="6" opacity=".95"/>
+          <path d="M70 40h160l-20 220H90Z" fill="#ffe9cf"/>
+          <rect x="90" y="120" width="120" height="38" rx="18" fill="#ffd2dd"/>
+          <rect x="90" y="170" width="120" height="38" rx="18" fill="#dff6e9"/>
+          <circle cx="150" cy="20" r="18" fill="#e96a87"/>
+          <circle cx="120" cy="28" r="10" fill="#ff9bb0"/>
+          <circle cx="180" cy="28" r="10" fill="#ff9bb0"/>
+        </g>
+
+        <g transform="translate(280,90)">
+          <path d="M40 0h220l-30 290H70Z" fill="#fff" stroke="#f0b6c2" stroke-width="6" opacity=".95"/>
+          <path d="M70 40h160l-20 220H90Z" fill="#fff0e6"/>
+          <rect x="90" y="120" width="120" height="38" rx="18" fill="#ffd2dd"/>
+          <rect x="90" y="170" width="120" height="38" rx="18" fill="#ffe9cf"/>
+          <circle cx="150" cy="20" r="18" fill="#e96a87"/>
+          <circle cx="120" cy="28" r="10" fill="#ff9bb0"/>
+          <circle cx="180" cy="28" r="10" fill="#ff9bb0"/>
+        </g>
+      </g>
+
+      <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#3a2b2e">
+        <text x="290" y="560" font-size="44" font-weight="900">Postres en vasitos</text>
+        <text x="290" y="615" font-size="26" font-weight="700" fill="#6f5a60">Packs para eventos y reuniones</text>
+      </g>
+    </svg>`;
+
+    function toDataUri(svg){
+      return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
+    }
+
+    // Set CSS vars for images
+    const style = document.documentElement.style;
+    style.setProperty('--img-cake', toDataUri(svgCake));
+    style.setProperty('--img-cupcakes', toDataUri(svgCupcakes));
+    style.setProperty('--img-desserts', toDataUri(svgDesserts));
+  </script>
+</body>
+</html>
